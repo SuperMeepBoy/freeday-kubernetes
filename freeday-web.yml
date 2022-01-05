@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: freeday-web-deployment
+  labels:
+    app: freeday-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: freeday-web
+  template:
+    metadata:
+      labels:
+        app: freeday-web
+    spec:
+      containers:
+      - name: freeday-freeday-web
+        image: supermeepboy/freeday
+        ports: 
+        - containerPort: 8788
+        envFrom:
+          - configMapRef:
+              name: freeday-config 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: freeday-web-service
+spec:
+  type: NodePort
+  selector:
+    app: freeday-web
+  ports:
+    - protocol: TCP
+      port: 8788
+      targetPort: 8788
+      nodePort: 30100

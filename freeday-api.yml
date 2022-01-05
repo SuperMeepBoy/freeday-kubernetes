@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: freeday-api-deployment
+  labels:
+    app: freeday-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: freeday-api
+  template:
+    metadata:
+      labels:
+        app: freeday-api
+    spec:
+      containers:
+      - name: freeday-api
+        image: supermeepboy/freeday-api:latest
+        args:
+          - "web"
+        ports: 
+        - containerPort: 8787
+        env:
+        - name: USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: mongo-user
+        - name: USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: mongo-password
+
+        envFrom:
+          - configMapRef:
+              name: freeday-config 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: freeday-api-service
+spec:
+  type: NodePort
+  selector:
+    app: freeday-api
+  ports:
+    - protocol: TCP
+      port: 8787
+      targetPort: 8787
+      nodePort: 30000
+

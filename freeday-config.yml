@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: freeday-config
+  namespace: default
+data:
+  FRONT_PUBLIC_URL: "http://192.168.49.2:30100/"
+  API_PUBLIC_URL: "http://192.168.49.2:30000/"
+  API_PORT: "8787"
+  API_LOG_DIR: "/var/log/freeday"
+  API_ENABLE_CORS: "true"
+  MONGO_URL: "mongo-service"
+  SLACK_ENABLED: "true"
+  SLACK_CLIENT_ID: "abc"
+  SLACK_CLIENT_SECRET: "def"
+  SLACK_SIGNING_SECRET: "ghi"
+  SLACK_ACCESS_TOKEN: "jkl"
+  DIALOGFLOW_ENABLED: "false"
